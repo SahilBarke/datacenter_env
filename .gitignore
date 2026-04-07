@@ -1,0 +1,4 @@
+env/
+.env
+client.py
+__pycache__/

@@ -1,0 +1,19 @@
+spec_version: 1
+name: datacenter_env
+type: space
+runtime: fastapi
+app: server.app:app
+port: 8000
+
+tasks:
+  - name: fix_latency
+    description: Reduce latency below threshold
+    difficulty: easy
+
+  - name: gpu_overload
+    description: Balance CPU and reduce errors
+    difficulty: medium
+
+  - name: cascading_failure
+    description: Stabilize full system under stress
+    difficulty: hard
