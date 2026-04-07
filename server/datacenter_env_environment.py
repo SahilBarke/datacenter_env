@@ -12,8 +12,6 @@ class DatacenterEnvironment:
 
     def reset(self, seed: int = None, episode_id: str = None) -> DatacenterObservation:
 
-        # self.prev_latency = self.latency
-        # self.prev_error_rate = self.error_rate
         if seed is not None:
             random.seed(seed)
 
@@ -98,25 +96,24 @@ class DatacenterEnvironment:
         reward = 0
 
         if self.task == "fix_latency":
-            # Latency is the primary signal
             reward -= 0.00008 * (self.latency**2)  # stronger latency penalty
             reward -= 3 * (self.error_rate**2)  # lighter error weight
             reward += 0.2 * (
                 self.prev_latency - self.latency
-            )  # bigger improvement bonus
+            )  # improvement bonus
             reward += 5 * (self.prev_error_rate - self.error_rate)
 
-            # Reduce scale_up penalty — it's the right action here
+            # Reduce scale_up penalty 
             if act == "scale_up":
-                reward -= 0.5  # was -1.5
+                reward -= 0.5  
             elif act == "do_nothing":
-                reward -= 2.0  # punish inaction harder
+                reward -= 2.0 
 
             # SLA thresholds
             if self.latency > 400:
                 reward -= 5
             if self.latency > 250:
-                reward -= 2  # extra pressure in the middle range
+                reward -= 2  
             if self.error_rate > 0.15:
                 reward -= 5
 
@@ -128,7 +125,6 @@ class DatacenterEnvironment:
             reward -= 0.1 * self.active_servers
 
         else:
-            # Keep your existing logic for other tasks
             reward -= 0.00005 * (self.latency**2)
             reward -= 8 * (self.error_rate**2)
             reward -= 0.1 * self.active_servers
@@ -156,7 +152,6 @@ class DatacenterEnvironment:
 
     def get_score(self) -> float:
         if self.task == "fix_latency":
-            # return max(0, min(1, (600 - self.latency) / 600))
             if self.latency < 150 and self.error_rate < 0.05:
                 return 1.0  # perfect score on goal completion
 

@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: Datacenter Optimization Environment
 emoji: ⚡
 colorFrom: blue

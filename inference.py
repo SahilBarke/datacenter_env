@@ -12,9 +12,7 @@ from server.datacenter_env_environment import DatacenterEnvironment, DatacenterA
 # ================= CONFIG =================
 
 API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-# API_KEY = os.getenv("API_KEY")
 API_BASE_URL = os.getenv("API_BASE_URL")
-# API_BASE_URL = "https://api.groq.com/openai/v1"
 MODEL_NAME = os.getenv("MODEL_NAME") or ""
 
 TASKS = ["fix_latency", "gpu_overload", "cascading_failure"]
