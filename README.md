@@ -48,3 +48,14 @@ Agents must learn to:
   "action_type": "scale_up | restart_service | reroute_traffic | do_nothing",
   "target_servers": 1
 }
+
+---
+## Endpoints
+
+- POST /reset
+- POST /step
+- GET /schema
+
+## Live Demo
+
+https://sahil-barke01-datacenter-env.hf.space
