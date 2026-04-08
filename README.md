@@ -50,11 +50,14 @@ Agents must learn to:
 }
 
 ---
+
 ## Endpoints
 
 - POST /reset
 - POST /step
 - GET /schema
+
+---
 
 ## Live Demo
 
