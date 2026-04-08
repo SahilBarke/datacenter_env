@@ -12,8 +12,11 @@ from server.datacenter_env_environment import DatacenterEnvironment, DatacenterA
 # ================= CONFIG =================
 
 API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-API_BASE_URL = os.getenv("API_BASE_URL")
-MODEL_NAME = os.getenv("MODEL_NAME") or ""
+if not API_KEY:
+    raise ValueError("Missing API key (HF_TOKEN or API_KEY)")
+
+API_BASE_URL = os.getenv("API_BASE_URL", "")
+MODEL_NAME = os.getenv("MODEL_NAME", "")
 
 TASKS = ["fix_latency", "gpu_overload", "cascading_failure"]
 BENCHMARK = "datacenter_env"
