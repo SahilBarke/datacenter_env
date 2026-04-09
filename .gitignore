@@ -1,5 +1,4 @@
 env/
 .env
-client.py
 __pycache__/
 validate-submission.sh
