@@ -151,22 +151,27 @@ class DatacenterEnvironment:
         return False
 
     def get_score(self) -> float:
+        EPS = 1e-6
+        
+        def clamp(score):
+            return max(EPS, min(1 - EPS, score))
+        
         if self.task == "fix_latency":
             if self.latency < 150 and self.error_rate < 0.05:
-                return 1.0  # perfect score on goal completion
+                return 1 - EPS  
 
             latency_score = max(0, min(1, (600 - self.latency) / (600 - 150)))
             error_score = max(0, min(1, 1 - self.error_rate / 0.2))
-            return 0.7 * latency_score + 0.3 * error_score
+            return clamp(0.7 * latency_score + 0.3 * error_score)
 
         elif self.task == "gpu_overload":
-            return max(0, min(1, 1 - (self.cpu / 150 + self.error_rate * 1.2)))
+            return clamp(max(0, min(1, 1 - (self.cpu / 150 + self.error_rate * 1.2))))
 
         elif self.task == "cascading_failure":
             penalty = (self.latency / 700) + (self.cpu / 150) + (self.error_rate * 1.5)
-            return max(0, min(1, 1 - penalty / 2.5))
+            return clamp(max(0, min(1, 1 - penalty / 2.5)))
 
-        return 0.0
+        return EPS  # default minimal score
 
     async def reset_async(self, seed: int = None, episode_id: str = None):
         return self.reset(seed=seed, episode_id=episode_id)
