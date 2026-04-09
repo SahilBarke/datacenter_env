@@ -147,7 +147,7 @@ async def main():
         env = DatacenterEnvironment()
         rewards = []
         steps_taken = 0
-        score = 0.0
+        score = None
         info = {}
         success = False
         recent_actions = []
@@ -181,7 +181,7 @@ async def main():
                     score = env.get_score()
                     break
 
-            if score == 0.0:
+            if score is None:
                 score = env.get_score()
 
             success = score >= SUCCESS_SCORE_THRESHOLD
