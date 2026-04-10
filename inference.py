@@ -23,6 +23,9 @@ BENCHMARK = "datacenter_env"
 MAX_STEPS = 20
 SUCCESS_SCORE_THRESHOLD = 0.6
 
+MIN_VALID_SCORE = 0.002
+MAX_VALID_SCORE = 0.998
+
 VALID_ACTIONS = ["scale_up", "restart_service", "reroute_traffic", "do_nothing"]
 
 
@@ -184,6 +187,7 @@ async def main():
             if score is None:
                 score = env.get_score()
 
+            score = max(MIN_VALID_SCORE, min(MAX_VALID_SCORE, score))
             success = score >= SUCCESS_SCORE_THRESHOLD
 
         finally:
