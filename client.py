@@ -1,11 +1,3 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-#
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-
-"""Datacenter Env Environment Client."""
-
 from typing import Dict
 
 from openenv.core import EnvClient
@@ -29,7 +21,7 @@ class DatacenterEnv(EnvClient[DatacenterAction, DatacenterObservation, State]):
         ...     result = client.reset()
         ...     print(result.observation.echoed_message)
         ...
-        ...     result = client.step(DatacenterAction(message="Hello!"))
+        ...     DatacenterAction(action_type="scale_up", target_servers=1)
         ...     print(result.observation.echoed_message)
 
     Example with Docker:
@@ -53,7 +45,10 @@ class DatacenterEnv(EnvClient[DatacenterAction, DatacenterObservation, State]):
             Dictionary representation suitable for JSON encoding
         """
         return {
-            "action_type": action.action_type,
+            "action": {
+                "action_type": action.action_type,
+                "target_servers": action.target_servers
+            }
         }
 
     def _parse_result(self, payload: Dict) -> StepResult[DatacenterObservation]:
@@ -67,12 +62,13 @@ class DatacenterEnv(EnvClient[DatacenterAction, DatacenterObservation, State]):
             StepResult with DatacenterObservation
         """
         obs_data = payload.get("observation", {})
+
         observation = DatacenterObservation(
-            cpu_usage=obs_data.get("cpu_usage"),
-            latency=obs_data.get("latency"),
-            error_rate=obs_data.get("error_rate"),
-            active_servers=obs_data.get("active_servers"),
-            reward=payload.get("reward"),
+            cpu_usage=obs_data.get("cpu_usage", 0),
+            latency=obs_data.get("latency", 0),
+            error_rate=obs_data.get("error_rate", 0),
+            active_servers=obs_data.get("active_servers", 0),
+            reward=payload.get("reward", 0),
             done=payload.get("done", False),
         )
 
